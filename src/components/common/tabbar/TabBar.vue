@@ -6,20 +6,26 @@
 </script>
 
 <template>
-  <div id="tab-tar">
+  <div class="tab-tar">
     <slot></slot>
   </div>
 </template>
 
 <style scoped>
-#tab-tar{
-  display:flex;
+.tab-tar{
+  background-color: #f6f6f6;
+  height: 49px;
+  border-top: 1px solid #eee;
+  box-shadow: 0 -1px 1px rgba(150,150,150, .8);
+
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
-  background-color: #f6f6f6;
-  box-shadow: 0 -3px 1px rgba(100,100,100,.1);
+  bottom: 0;
+
+  display: flex;
+  text-align: center;
+  z-index: 1;
 }
 
 </style>

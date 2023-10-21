@@ -28,7 +28,8 @@ const  routes= [
     {
         path: '/profile',
         component: Profile
-    }
+    },
+
 ]
 const router = new VueRouter({
     routes,
