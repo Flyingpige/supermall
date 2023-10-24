@@ -5,7 +5,6 @@
       <recommend-view :recommends="this.recommend"></recommend-view>
       <feature-view></feature-view>
       <tab-control class="tab-con" :titles="['流行','新款','精选']"></tab-control>
-<!--     <main-tab-bar class="main-tab-bar"></main-tab-bar>-->
     <ul>
       <li>abc1</li>
       <li>abc2</li>
@@ -48,7 +47,7 @@
       <li>abc9</li>
       <li>abc10</li>
     </ul>
-
+<!--         <main-tab-bar class="main-tab-bar"></main-tab-bar>-->
   </div>
 </template>
 <script>
@@ -61,7 +60,8 @@ import FeatureView from "@/views/home/childComps/FeatureView.vue";
 import TabControl from "@/components/content/tabControl/TabControl.vue";
 import MainTabBar from "@/components/content/mainTabbar/MainTabBar.vue";
 
-import {getHomeMultiData} from "@/network/home";
+import {getHomeMultiData,getHomeGoods} from "@/network/home";
+
 export default {
   name: "Home",
   components:{
@@ -78,20 +78,38 @@ export default {
       recommend:[],
       goods:{
         'pop':{page:0, list:[]},
-        'news':{page:0, list:[]},
+        'new':{page:0, list:[]},
         'sell':{page:0, list:[]},
       }
     }
   },
   created() {
     /*当组件创建的时候就发送网络请求获取数据*/
-    getHomeMultiData().then(res=>{
-      console.log(res);
-      this.banner = res.data.banner.list;
-      this.recommend = res.data.recommend.list;
-      console.log(this.banner);
-      console.log(this.recommend);
-    })
+    this.getHomeMultiData()
+    this.getHomeGoods('pop')
+    this.getHomeGoods('sell')
+    this.getHomeGoods('new')
+
+  },
+  methods:{
+    getHomeMultiData(){
+      getHomeMultiData().then(res=>{
+        // console.log(res);
+        this.banner = res.data.banner.list;
+        this.recommend = res.data.recommend.list;
+        // console.log(this.banner);
+        // console.log(this.recommend);
+      })
+    },
+
+    getHomeGoods(type){
+      const page =  this.goods[type].page +1
+      getHomeGoods(type,page).then(res=>{
+        this.goods[type].list.push(...res.data.list)
+        this.goods[type].page += 1
+        console.log(this.goods[type].list)
+      })
+    }
   }
 }
 </script>
