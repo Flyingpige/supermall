@@ -4,49 +4,8 @@
       <home-swiper :banner="this.banner"></home-swiper>
       <recommend-view :recommends="this.recommend"></recommend-view>
       <feature-view></feature-view>
-      <tab-control class="tab-con" :titles="['流行','新款','精选']"></tab-control>
-    <ul>
-      <li>abc1</li>
-      <li>abc2</li>
-      <li>abc3</li>
-      <li>abc4</li>
-      <li>abc5</li>
-      <li>abc6</li>
-      <li>abc7</li>
-      <li>abc8</li>
-      <li>abc9</li>
-      <li>abc10</li>
-      <li>abc1</li>
-      <li>abc2</li>
-      <li>abc3</li>
-      <li>abc4</li>
-      <li>abc5</li>
-      <li>abc6</li>
-      <li>abc7</li>
-      <li>abc8</li>
-      <li>abc9</li>
-      <li>abc10</li>
-      <li>abc1</li>
-      <li>abc2</li>
-      <li>abc3</li>
-      <li>abc4</li>
-      <li>abc5</li>
-      <li>abc6</li>
-      <li>abc7</li>
-      <li>abc8</li>
-      <li>abc9</li>
-      <li>abc10</li>
-      <li>abc1</li>
-      <li>abc2</li>
-      <li>abc3</li>
-      <li>abc4</li>
-      <li>abc5</li>
-      <li>abc6</li>
-      <li>abc7</li>
-      <li>abc8</li>
-      <li>abc9</li>
-      <li>abc10</li>
-    </ul>
+      <tab-control class="tab-con" :titles="['流行','新款','精选']" @tabItemClick="itemClicked"></tab-control>
+      <goods-list :goods=showGoods></goods-list>
 <!--         <main-tab-bar class="main-tab-bar"></main-tab-bar>-->
   </div>
 </template>
@@ -59,12 +18,14 @@ import RecommendView from "@/views/home/childComps/RecommendView.vue";
 import FeatureView from "@/views/home/childComps/FeatureView.vue";
 import TabControl from "@/components/content/tabControl/TabControl.vue";
 import MainTabBar from "@/components/content/mainTabbar/MainTabBar.vue";
+import GoodsList from "@/components/content/goods/GoodsList.vue";
 
 import {getHomeMultiData,getHomeGoods} from "@/network/home";
 
 export default {
   name: "Home",
   components:{
+    GoodsList,
     NavBar,
     HomeSwiper,
     RecommendView,
@@ -80,7 +41,8 @@ export default {
         'pop':{page:0, list:[]},
         'new':{page:0, list:[]},
         'sell':{page:0, list:[]},
-      }
+      },
+      currentType:'pop'
     }
   },
   created() {
@@ -91,7 +53,36 @@ export default {
     this.getHomeGoods('new')
 
   },
+  /**
+   * 我就是喜欢解耦
+   */
+  computed:{
+    showGoods(){
+      return this.goods[this.currentType].list
+    }
+  },
   methods:{
+    /**
+     * 事件点击相关方法
+     */
+    itemClicked(index){
+      console.log(index)
+      switch (index){
+        case 0:
+          this.currentType='pop'
+          break
+        case 1:
+          this.currentType='new'
+          break
+        case 2:
+          this.currentType='sell'
+          break
+      }
+    },
+    /**
+       * 网络请求相关方法
+       */
+
     getHomeMultiData(){
       getHomeMultiData().then(res=>{
         // console.log(res);
@@ -122,12 +113,12 @@ export default {
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
-    z-index: 1;
+    z-index: 9;
     position: sticky;
     top: 0;
   }
   .tab-con{
-    z-index: 0;
+    z-index: 8;
     position: sticky;
     top: 44px;
   }
