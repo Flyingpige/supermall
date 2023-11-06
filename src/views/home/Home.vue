@@ -1,12 +1,14 @@
 <template>
   <div id="home">
-      <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <my-scroll class="content" ref="myScroll">
       <home-swiper :banner="this.banner"></home-swiper>
       <recommend-view :recommends="this.recommend"></recommend-view>
       <feature-view></feature-view>
       <tab-control class="tab-con" :titles="['流行','新款','精选']" @tabItemClick="itemClicked"></tab-control>
       <goods-list :goods=showGoods></goods-list>
-<!--         <main-tab-bar class="main-tab-bar"></main-tab-bar>-->
+    </my-scroll>
+    <back-top class="back-top" @click.native="backClick"/>
   </div>
 </template>
 <script>
@@ -19,8 +21,11 @@ import FeatureView from "@/views/home/childComps/FeatureView.vue";
 import TabControl from "@/components/content/tabControl/TabControl.vue";
 import MainTabBar from "@/components/content/mainTabbar/MainTabBar.vue";
 import GoodsList from "@/components/content/goods/GoodsList.vue";
+import myScroll from "@/components/common/scroll/myScroll.vue";
+import BackTop from "@/components/content/backTop/BackTop.vue";
 
 import {getHomeMultiData,getHomeGoods} from "@/network/home";
+import backTop from "@/components/content/backTop/BackTop.vue";
 
 export default {
   name: "Home",
@@ -31,7 +36,9 @@ export default {
     RecommendView,
     FeatureView,
     TabControl,
-    MainTabBar
+    MainTabBar,
+    myScroll,
+    BackTop
   },
   data(){
     return{
@@ -57,9 +64,15 @@ export default {
    * 我就是喜欢解耦
    */
   computed:{
+    backTop() {
+      return backTop
+    },
     showGoods(){
       return this.goods[this.currentType].list
     }
+  },
+  mounted() {
+
   },
   methods:{
     /**
@@ -78,6 +91,11 @@ export default {
           this.currentType='sell'
           break
       }
+    },
+    backClick(){
+      console.log('clicked');
+      console.log(this.$refs.myScroll.scroll);
+      this.$refs.myScroll.scroll.scrollTo(0,0,500)
     },
     /**
        * 网络请求相关方法
@@ -106,8 +124,8 @@ export default {
 </script>
 <style scoped>
   #home{
-   /*height: 100vh;
-  加上这句话反而导致tab-con的sticky失效*/
+   height: 100vh;
+  /*加上这句话反而导致tab-con的sticky失效*/
    position: relative;
   }
   .home-nav {
@@ -118,9 +136,28 @@ export default {
     top: 0;
   }
   .tab-con{
-    z-index: 8;
-    position: sticky;
+    z-index: 0;
+    //position: sticky;
     top: 44px;
+  }
+  /*
+  .content {
+    position: absolute;
+    //overflow: hidden;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+  }
+  .content {
+    height: calc(100% - 44px - 49px);
+    //z-index: 1;
+    //overflow: hidden;
+
+  }
+  */
+  .back-top{
+
   }
 
 </style>

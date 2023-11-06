@@ -109,7 +109,7 @@
 
 <script>
 /* eslint-disable*/
-import  BScroll from 'better-scroll'
+
 export default {
   name: "Category",
   data(){
@@ -119,6 +119,7 @@ export default {
   },
   // 在vue实例创建完成后被立即调用,此有data、访问器属性，没有虚拟dom
   created() {
+
   },
   /**
    * mounted阶段，vue的template成功挂载到$el中，此时一个完整的页面已经能够显示在浏览器中
@@ -126,8 +127,8 @@ export default {
    */
   mounted() {
     // document.querySelector('.wrapper')
-    console.log(document.querySelector('.wrapper'));
-    // this.$ref.aaa
+    // console.log(this.$refs.aaa)
+    //
     /**
      *
      * @type {BScroll | (BScrollConstructor & UnionToIntersection<ExtractAPI<{movable: boolean, probeType: number, zoom: boolean}>>)}
@@ -135,19 +136,19 @@ export default {
      * 2 :在滑动的时候侦测，手指离开后的惯性期间不侦测
      * 3 :任何时间都侦测
      */
-    this.scroll = new BScroll('.wrapper',{
-      movable: true,
-      zoom: true,
-      probeType:3,
-      pullUpLoad:true
-    })
-    console.log(this.scroll)
-    this.scroll.on('scroll',(position)=>{
-      console.log(position);
-    })
-    this.scroll.on('pullingUp',()=>{
-
-    })
+    // this.scroll = new BScroll(this.$refs.aaa,{
+    //   movable: true,
+    //   zoom: true,
+    //   probeType:3,
+    //   pullUpLoad:true
+    // })
+    // console.log(this.scroll)
+    // this.scroll.on('scroll',(position)=>{
+    //   // console.log(position);
+    // })
+    // this.scroll.on('pullingUp',()=>{
+    //
+    // })
   }
 }
 
